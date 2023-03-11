@@ -1,9 +1,16 @@
-const cardsContainer = document.querySelector('#cards-container');
+const cardsContainer = document.querySelector('#cardsContainer');
+const hideLearnedCheckbox = document.querySelector('#hideLearned');
+const addQuestionBtn = document.querySelector('#addQuestionBtn');
 
-questions.forEach((question) => {
-    cardsContainer.insertAdjacentHTML(
-        'beforeend',
-        `
+renderCards(questions);
+hideLearnedCheckbox.addEventListener('change', updateCards);
+addQuestionBtn.addEventListener('click', addQuestion);
+
+function renderCards(questions) {
+    questions.forEach((question) => {
+        cardsContainer.insertAdjacentHTML(
+            'beforeend',
+            `
             <div class="column is-one-third-desktop is-flex">
                 <div class="card is-flex-grow-1 is-flex is-flex-direction-column 
                     ${generateBgColor(question)}">
@@ -14,8 +21,8 @@ questions.forEach((question) => {
                     </div>
                     <footer class="card-footer">
                         <div
-                            class="card-footer-item">
-                            <span class="icon-text">
+                            class="card-footer-item py-2">
+                            <span class="icon-text has-text-weight-semibold">
                                 ${generateStatus(question)}
                             </span>
                         </div>
@@ -23,8 +30,9 @@ questions.forEach((question) => {
                 </div>
             </div>
         `
-    );
-});
+        );
+    });
+}
 
 function generateStatus(question) {
     if (question.isLearned) {
@@ -50,4 +58,32 @@ function generateBgColor(question) {
     } else {
         return 'has-background-danger-light';
     }
+}
+
+function updateCards() {
+    clearCardsContainer();
+    if (hideLearnedCheckbox.checked) {
+        const notLearnedQuestions = questions.filter(
+            (question) => !question.isLearned
+        );
+        renderCards(notLearnedQuestions);
+    } else {
+        renderCards(questions);
+    }
+}
+
+function clearCardsContainer() {
+    while (cardsContainer.childElementCount > 1) {
+        cardsContainer.removeChild(cardsContainer.lastChild);
+    }
+}
+
+function addQuestion() {
+    const addQuestionField = document.querySelector('#addQuestionField');
+    questions.unshift({
+        text: addQuestionField.value,
+        isLearned: false,
+    });
+    updateCards();
+    addQuestionField.value = '';
 }

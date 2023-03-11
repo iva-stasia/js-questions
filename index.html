@@ -16,16 +16,53 @@
             href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
     </head>
     <body>
-        <section class="section">
-            <div class="container">
-                <h1 class="title has-text-centered">JavaScript Questions</h1>
-            </div>
-            <div class="container mt-6">
+        <main class="mx-4">
+            <nav class="level container py-5">
+                <div class="level-left">
+                    <div class="level-item">
+                        <span class="icon-text is-size-3">
+                            <span class="icon">
+                                <i class="fa-brands fa-square-js"></i>
+                            </span>
+                            <span class='has-text-weight-semibold'>Interview Questions</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <div class="level-item">
+                        <label class="checkbox">
+                            <input type="checkbox" id="hideLearned" />
+                            Hide learned questions
+                        </label>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container mb-6">
                 <div
-                    class="columns is-multiline is-desktop "
-                    id="cards-container"></div>
+                    class="columns is-multiline is-desktop"
+                    id="cardsContainer">
+                    <div class="column is-one-third-desktop is-flex">
+                        <div
+                            class="card is-flex-grow-1 is-flex is-flex-direction-column is-clipped has-background-light">
+                            <textarea
+                                class="textarea has-fixed-size is-flex-grow-1"
+                                placeholder="Enter a question"
+                                rows="1"
+                                id='addQuestionField'></textarea>
+                            <button class="button is-radiusless is-light" id='addQuestionBtn'>
+                                <span class="icon">
+                                    <i class="fa-solid fa-plus"></i>
+                                </span>
+                                <span class='has-text-weight-semibold'>Add Question</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </section>
+        </main>
+
         <script src="./questions.js"></script>
         <script src="./main.js"></script>
     </body>

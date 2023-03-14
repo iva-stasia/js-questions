@@ -80,7 +80,7 @@ function clearCardsContainer() {
 
 function addQuestion() {
     const addQuestionField = document.querySelector('#addQuestionField');
-    questions.unshift({
+    questions.push({
         text: addQuestionField.value,
         isLearned: false,
     });

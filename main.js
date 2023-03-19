@@ -4,7 +4,7 @@ const addQuestionBtn = document.querySelector('#addQuestionBtn');
 
 renderCards(questions);
 hideLearnedCheckbox.addEventListener('change', updateCards);
-addQuestionBtn.addEventListener('click', addQuestion);
+addQuestionBtn.addEventListener('click', renderNewQuestion);
 
 function renderCards(questions) {
     questions.forEach((question) => {
@@ -78,12 +78,17 @@ function clearCardsContainer() {
     }
 }
 
-function addQuestion() {
-    const addQuestionField = document.querySelector('#addQuestionField');
-    questions.push({
-        text: addQuestionField.value,
+function addQuestionToDataset(dataset, questionText) {
+    dataset.push({
+        text: questionText,
         isLearned: false,
     });
+}
+
+function renderNewQuestion() {
+    const addQuestionField = document.querySelector('#addQuestionField');
+
+    addQuestionToDataset(questions, addQuestionField.value);
     updateCards();
     addQuestionField.value = '';
 }

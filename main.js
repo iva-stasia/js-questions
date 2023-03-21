@@ -1,13 +1,18 @@
 const cardsContainer = document.querySelector('#cardsContainer');
-const hideLearnedCheckbox = document.querySelector('#hideLearned');
-const addQuestionBtn = document.querySelector('#addQuestionBtn');
 
 renderCards(questions);
-hideLearnedCheckbox.addEventListener('change', updateCards);
-addQuestionBtn.addEventListener('click', renderNewQuestion);
+cardsContainer.addEventListener('click', changeQuestionStatus);
+
+function changeQuestionStatus(event) {
+    if (event.target.closest('.status-btn')) {
+        const index = event.target.closest('.status-btn').dataset.index;
+        questions[index].isLearned = !questions[index].isLearned;
+        updateCards();
+    }
+}
 
 function renderCards(questions) {
-    questions.forEach((question) => {
+    questions.forEach((question, index) => {
         cardsContainer.insertAdjacentHTML(
             'beforeend',
             `
@@ -21,7 +26,7 @@ function renderCards(questions) {
                     </div>
                     <footer class="card-footer">
                         <div
-                            class="card-footer-item py-2">
+                            class="card-footer-item py-2 status-btn is-clickable" data-index="${index}">
                             <span class="icon-text has-text-weight-semibold">
                                 ${generateStatus(question)}
                             </span>
@@ -61,6 +66,8 @@ function generateBgColor(question) {
 }
 
 function updateCards() {
+    const hideLearnedCheckbox = document.querySelector('#hideLearned');
+
     clearCardsContainer();
     if (hideLearnedCheckbox.checked) {
         const notLearnedQuestions = questions.filter(

@@ -24,7 +24,9 @@
                             <span class="icon">
                                 <i class="fa-brands fa-square-js"></i>
                             </span>
-                            <span class='has-text-weight-semibold'>Interview Questions</span>
+                            <span class="has-text-weight-semibold"
+                                >Interview Questions</span
+                            >
                         </span>
                     </div>
                 </div>
@@ -32,7 +34,10 @@
                 <div class="level-right">
                     <div class="level-item">
                         <label class="checkbox">
-                            <input type="checkbox" id="hideLearned" />
+                            <input
+                                type="checkbox"
+                                id="hideLearned"
+                                onchange="updateCards()" />
                             Hide learned questions
                         </label>
                     </div>
@@ -50,12 +55,17 @@
                                 class="textarea has-fixed-size is-flex-grow-1"
                                 placeholder="Enter a question"
                                 rows="1"
-                                id='addQuestionField'></textarea>
-                            <button class="button is-radiusless is-light" id='addQuestionBtn'>
+                                id="addQuestionField"></textarea>
+                            <button
+                                class="button is-radiusless is-light"
+                                id="addQuestionBtn"
+                                onclick="renderNewQuestion()">
                                 <span class="icon">
                                     <i class="fa-solid fa-plus"></i>
                                 </span>
-                                <span class='has-text-weight-semibold'>Add Question</span>
+                                <span class="has-text-weight-semibold"
+                                    >Add Question</span
+                                >
                             </button>
                         </div>
                     </div>

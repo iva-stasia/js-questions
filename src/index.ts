@@ -1,10 +1,17 @@
-import questions from '../questions';
+import questions from './questions';
+
+interface IQuestion {
+  text: string;
+  isLearned: boolean;
+}
 
 const cardsContainer = document.querySelector('#cardsContainer');
-const hideLearnedCheckbox = document.querySelector('#hideLearned');
+const hideLearnedCheckbox = document.querySelector(
+  '#hideLearned'
+) as HTMLInputElement | null;
 const addQuestionBtn = document.querySelector('#addQuestionBtn');
 
-function generateStatus(question) {
+function generateStatus(question: IQuestion) {
   if (question.isLearned) {
     return `
             <span class="icon has-text-success">
@@ -21,15 +28,17 @@ function generateStatus(question) {
         `;
 }
 
-function generateBgColor(question) {
+function generateBgColor(question: IQuestion) {
   if (question.isLearned) {
     return 'has-background-success-light';
   }
   return 'has-background-danger-light';
 }
 
-function renderCards(questionsList) {
-  questionsList.forEach((question, index) => {
+function renderCards(questionsList: IQuestion[]) {
+  questionsList.forEach((question: IQuestion, index: number) => {
+    if (!cardsContainer) return;
+
     cardsContainer.insertAdjacentHTML(
       'beforeend',
       `
@@ -57,14 +66,17 @@ function renderCards(questionsList) {
 }
 
 function clearCardsContainer() {
+  if (!cardsContainer) return;
+
   while (cardsContainer.childElementCount > 1) {
+    if (!cardsContainer.lastChild) return;
     cardsContainer.removeChild(cardsContainer.lastChild);
   }
 }
 
 function updateCards() {
   clearCardsContainer();
-  if (hideLearnedCheckbox.checked) {
+  if (hideLearnedCheckbox && hideLearnedCheckbox.checked) {
     const notLearnedQuestions = questions.filter(
       (question) => !question.isLearned
     );
@@ -74,7 +86,7 @@ function updateCards() {
   }
 }
 
-function addQuestionToDataset(dataset, questionText) {
+function addQuestionToDataset(dataset: IQuestion[], questionText: string) {
   dataset.push({
     text: questionText,
     isLearned: false,
@@ -82,22 +94,33 @@ function addQuestionToDataset(dataset, questionText) {
 }
 
 function renderNewQuestion() {
-  const addQuestionField = document.querySelector('#addQuestionField');
+  const addQuestionField = document.querySelector(
+    '#addQuestionField'
+  ) as HTMLInputElement | null;
 
+  if (!addQuestionField) return;
   addQuestionToDataset(questions, addQuestionField.value);
   updateCards();
   addQuestionField.value = '';
 }
 
-function changeQuestionStatus(event) {
-  if (event.target.closest('.status-btn')) {
-    const { index } = event.target.closest('.status-btn').dataset;
-    questions[index].isLearned = !questions[index].isLearned;
+function changeQuestionStatus(event: Event) {
+  const target = event.target as HTMLElement | null;
+  if (target && target.closest('.status-btn')) {
+    const { index } = (target.closest('.status-btn') as HTMLElement).dataset;
+    if (!index) return;
+    questions[+index].isLearned = !questions[+index].isLearned;
     updateCards();
   }
 }
 
 renderCards(questions);
-cardsContainer.addEventListener('click', changeQuestionStatus);
-hideLearnedCheckbox.addEventListener('change', updateCards);
-addQuestionBtn.addEventListener('click', renderNewQuestion);
+if (cardsContainer) {
+  cardsContainer.addEventListener('click', changeQuestionStatus);
+}
+if (hideLearnedCheckbox) {
+  hideLearnedCheckbox.addEventListener('change', updateCards);
+}
+if (addQuestionBtn) {
+  addQuestionBtn.addEventListener('click', renderNewQuestion);
+}
